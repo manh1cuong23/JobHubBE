@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thông báo từ {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 0;
+      }
+      .email-wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      }
+      .email-header {
+        background-color: #bdc3c7;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .email-header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .email-body {
+        padding: 30px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .email-body h2 {
+        color: #2c3e50;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 25px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .email-footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <div class="email-header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+      </div>
+      <div class="email-body">
+        <h2>Chào bạn {{candidateName}},</h2>
+        <p>
+          Cảm ơn bạn đã quan tâm và ứng tuyển vào vị trí <strong>{{jobTitle}}</strong> tại <strong>{{employerName}}</strong>.
+        </p>
+        <p>
+          Sau khi xem xét hồ sơ, rất tiếc chúng tôi phải thông báo rằng CV của bạn <strong>chưa phù hợp</strong> với yêu cầu của vị trí này.
+        </p>
+        <p>
+          Tuy nhiên, đừng nản lòng! Rất nhiều cơ hội nghề nghiệp đang chờ đón bạn trên hệ thống của chúng tôi.
+        </p>
+        <a class="btn" href="{{jobListLink}}" target="_blank">Tìm thêm công việc khác</a>
+        <p style="margin-top: 30px;">
+          Cảm ơn bạn một lần nữa vì đã tin tưởng nền tảng {{yourWebsiteName}}.<br />
+          <em>Chúc bạn sớm tìm được công việc phù hợp!</em><br />
+          – Đội ngũ {{yourWebsiteName}}
+        </p>
+      </div>
+      <div class="email-footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

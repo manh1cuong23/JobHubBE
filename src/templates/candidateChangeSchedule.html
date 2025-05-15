@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Yêu cầu đổi lịch phỏng vấn - {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f6f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+      .header {
+        background-color: #f39c12;
+        color: #ffffff;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px;
+        font-size: 16px;
+        color: #333333;
+        line-height: 1.7;
+      }
+      .content h2 {
+        color: #d35400;
+      }
+      .info-box {
+        background-color: #fdf5e6;
+        border: 1px solid #f1c40f;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      a.btn {
+        display: inline-block;
+        margin-top: 20px;
+        background-color: #e67e22;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+        <p>Ứng viên đề nghị thay đổi lịch phỏng vấn</p>
+      </div>
+      <div class="content">
+        <h2>Chào {{employerName}},</h2>
+        <p>
+          Ứng viên <strong>{{candidateName}}</strong> đã gửi yêu cầu thay đổi lịch phỏng vấn cho vị trí <strong>{{jobTitle}}</strong> thuộc doanh nghiệp của bạn.
+        </p>
+        <div class="info-box">
+          <p><strong>⏰ Lịch cũ:</strong> {{oldSchedule}}</p>
+          <p><strong>📅 Lịch đề xuất mới:</strong> {{newSchedule}}</p>
+          <p><strong>📨 Lý do:</strong> {{reason}}</p>
+        </div>
+        <p>
+          Vui lòng xem xét yêu cầu này và cập nhật lại lịch nếu phù hợp. Bạn có thể phản hồi ứng viên trực tiếp trên hệ thống hoặc qua email.
+        </p>
+        <a href="{{interviewDashboardUrl}}" class="btn" target="_blank">Quản lý lịch phỏng vấn</a>
+        <p style="margin-top: 30px;">
+          Cảm ơn bạn đã đồng hành cùng {{yourWebsiteName}}.
+        </p>
+        <p>Trân trọng,<br />Đội ngũ {{yourWebsiteName}}</p>
+      </div>
+      <div class="footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

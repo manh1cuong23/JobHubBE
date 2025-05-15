@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thông báo từ {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 0;
+      }
+      .email-wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      }
+      .email-header {
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .email-header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .email-body {
+        padding: 30px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .email-body h2 {
+        color: #2c3e50;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #2980b9;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 25px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .email-footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <div class="email-header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+      </div>
+      <div class="email-body">
+        <h2>Xin chào {{candidateName}},</h2>
+        <p>
+          Chúng tôi rất vui được thông báo rằng hồ sơ của bạn đã được <span class="highlight">{{employerName}}</span> đánh giá là <strong>phù hợp</strong> cho vị trí:
+        </p>
+        <p class="highlight">“{{jobTitle}}”</p>
+        <p>
+          Đây là một tín hiệu rất tích cực! Nhà tuyển dụng có thể sẽ liên hệ với bạn trong thời gian tới để trao đổi sâu hơn.
+        </p>
+        <p>
+          Bạn có thể xem lại thông tin công việc và trao đổi ngay tại nền tảng của chúng tôi.
+        </p>
+        <p style="margin-top: 30px;">
+          Chúc bạn sớm đạt được công việc mong muốn!<br />
+          <em>Đội ngũ {{yourWebsiteName}}</em>
+        </p>
+      </div>
+      <div class="email-footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

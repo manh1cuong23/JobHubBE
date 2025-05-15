@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kết quả phỏng vấn - {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      }
+      .header {
+        background-color: #e74c3c;
+        color: #fff;
+        padding: 30px 20px;
+        text-align: center;
+      }
+      .header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .content h2 {
+        color: #e74c3c;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+        <p>Kết quả vòng phỏng vấn</p>
+      </div>
+      <div class="content">
+        <h2>Chào {{candidateName}},</h2>
+        <p>
+          Cảm ơn bạn đã dành thời gian tham gia buổi phỏng vấn cho vị trí <strong>{{jobTitle}}</strong> tại <strong>{{employerName}}</strong>.
+        </p>
+        <p>
+          Sau quá trình đánh giá kỹ lưỡng, chúng tôi rất tiếc phải thông báo rằng bạn <strong>chưa phù hợp</strong> với vị trí này ở thời điểm hiện tại.
+        </p>
+        <p>
+          Tuy nhiên, chúng tôi thực sự đánh giá cao những chia sẻ và tinh thần cầu tiến của bạn. Rất mong sẽ có cơ hội hợp tác cùng bạn trong các vị trí khác phù hợp hơn trong tương lai.
+        </p>
+        <p>
+          Bạn có thể tiếp tục cập nhật CV và ứng tuyển thêm các vị trí khác tại {{yourWebsiteName}}:
+          <br />
+          👉 <a href="{{websiteUrl}}" target="_blank">{{websiteUrl}}</a>
+        </p>
+        <p style="margin-top: 30px;">
+          Chúc bạn thật nhiều sức khỏe và thành công trong hành trình sự nghiệp!
+        </p>
+        <p style="margin-top: 20px;">Trân trọng,<br />Đội ngũ {{yourWebsiteName}}</p>
+      </div>
+      <div class="footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

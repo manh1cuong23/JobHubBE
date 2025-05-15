@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thư mời phỏng vấn - {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      }
+      .header {
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 30px 20px;
+        text-align: center;
+      }
+      .header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #2980b9;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 25px;
+        background-color: #27ae60;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+        <p>Kết nối đúng người – Đúng việc</p>
+      </div>
+      <div class="content">
+        <h2>Thư mời phỏng vấn</h2>
+        <p>Chào {{candidateName}},</p>
+        <p>
+          Cảm ơn bạn đã ứng tuyển vị trí <strong>{{jobTitle}}</strong> tại <strong>{{employerName}}</strong>.
+        </p>
+        <p>
+          Sau khi xem xét hồ sơ, chúng tôi rất ấn tượng với kinh nghiệm và kỹ năng của bạn, và xin trân trọng mời bạn tham gia buổi phỏng vấn theo thông tin sau:
+        </p>
+        <ul>
+          <li><strong>Thời gian:</strong> {{interviewDate}} lúc {{interviewTime}}</li>
+          <li><strong>Hình thức:</strong> {{interviewType}} {{#if interviewLink}}– <a href="{{interviewLink}}" target="_blank">Tham gia tại đây</a>{{/if}}</li>
+          <li><strong>Địa điểm (nếu offline):</strong> {{interviewLocation}}</li>
+          <li><strong>Người phỏng vấn:</strong> {{interviewerName}}</li>
+        </ul>
+        <p>
+          Nếu bạn cần thay đổi thời gian, vui lòng phản hồi lại email này hoặc liên hệ với chúng tôi qua: <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>
+        </p>
+        <a class="btn" href="{{interviewConfirmationLink}}" target="_blank">Xác nhận tham gia phỏng vấn</a>
+        <p style="margin-top: 30px;">
+          Trân trọng,<br />
+          {{employerName}}<br />
+          <em>Thông qua {{yourWebsiteName}}</em>
+        </p>
+      </div>
+      <div class="footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

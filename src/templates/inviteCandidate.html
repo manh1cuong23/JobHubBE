@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Thư mời ứng tuyển - {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+      .header {
+        background-color: #3498db;
+        color: #ffffff;
+        text-align: center;
+        padding: 30px 20px;
+      }
+      .header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px;
+        font-size: 16px;
+        color: #333333;
+        line-height: 1.7;
+      }
+      .content h2 {
+        color: #2980b9;
+      }
+      .job-card {
+        border: 1px solid #e1e1e1;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        margin-top: 20px;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 25px;
+        background-color: #2980b9;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h1>{{yourWebsiteName}}</h1>
+        <p>Nhà tuyển dụng đã gửi đến bạn một lời mời ứng tuyển</p>
+      </div>
+      <div class="content">
+        <h2>Xin chào {{candidateName}},</h2>
+        <p>
+          Nhà tuyển dụng <strong>{{employerName}}</strong> đã xem hồ sơ của bạn và tin rằng bạn có thể là ứng viên phù hợp cho vị trí:
+        </p>
+        <div class="job-card">
+          <p><strong>Vị trí:</strong> {{jobTitle}}</p>
+
+        </div>
+        <p>
+          Nếu bạn quan tâm, vui lòng nhấn vào nút bên dưới để xem chi tiết và phản hồi lời mời.
+        </p>
+        <a href="{{jobLink}}" class="btn" target="_blank">Xem chi tiết công việc</a>
+        <p style="margin-top: 30px;">
+          Cảm ơn bạn đã đồng hành cùng {{yourWebsiteName}}. Chúc bạn sớm tìm được công việc ưng ý!
+        </p>
+        <p>Trân trọng,<br />Đội ngũ {{yourWebsiteName}}</p>
+      </div>
+      <div class="footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>

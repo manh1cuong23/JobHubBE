@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ứng viên đã chấp nhận lời mời - {{yourWebsiteName}}</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f6f8fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .header {
+      background-color: #2ecc71;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .header img {
+      max-height: 50px;
+      margin-bottom: 10px;
+    }
+    .content {
+      padding: 30px;
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .content h2 {
+      color: #27ae60;
+    }
+    .info-box {
+      background-color: #eafaf1;
+      border-left: 5px solid #2ecc71;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    a.button {
+      display: inline-block;
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+      <h1>{{yourWebsiteName}}</h1>
+      <p>Ứng viên đã chấp nhận lời mời việc làm</p>
+    </div>
+    <div class="content">
+      <h2>Chào {{employerName}},</h2>
+      <p>
+        Tin vui! Ứng viên <strong>{{candidateName}}</strong> đã chính thức <strong>chấp nhận lời mời</strong> cho vị trí <strong>{{jobTitle}}</strong> tại doanh nghiệp của bạn.
+      </p>
+      <div class="info-box">
+        <p><strong>👤 Ứng viên:</strong> {{candidateName}}</p>
+        <p><strong>📌 Vị trí:</strong> {{jobTitle}}</p>
+        <p><strong>📅 Ngày ứng viên chấp nhận:</strong> {{acceptedDate}}</p>
+      </div>
+      <p>
+        Bạn có thể liên hệ trực tiếp với ứng viên để trao đổi thêm hoặc sắp xếp lịch phỏng vấn / onboarding. 
+        Vui lòng truy cập hệ thống để tiếp tục quy trình tuyển dụng.
+      </p>
+      <a href="{{employerDashboardUrl}}" class="button" target="_blank">Xem chi tiết trên hệ thống</a>
+      <p style="margin-top: 30px;">
+        Trân trọng,<br />
+        Đội ngũ {{yourWebsiteName}}
+      </p>
+    </div>
+    <div class="footer">
+      © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}" style="color: #888;">Truy cập website</a>
+    </div>
+  </div>
+</body>
+</html>
