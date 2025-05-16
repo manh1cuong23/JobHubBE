@@ -13,6 +13,7 @@ import { httpStatus } from '~/constants/httpStatus';
 import { Apply } from '~/models/schemas/ApplySchema';
 import { CVType } from '~/models/schemas/CandidateSchema';
 import {
+  sendMailCandidateChangeSchedule,
   sendMailFailInterview,
   sendMailInviteCandidate,
   sendMailInviteInterview,
@@ -60,15 +61,16 @@ export const createJobController = async (req: Request<ParamsDictionary, any, an
     skills.map(async (skill: string) => {
       const techFind = await db.skills.findOne({ name: skill });
       if (!techFind) {
-        fieldsFinds.map(async (fieldId: ObjectId) => {
-          const init = await db.skills.insertOne(new Skill({ name: skill, field_id: fieldId }));
-          return new ObjectId(init.insertedId);
-        });
+          const init = await db.skills.insertOne(new Skill({ name: skill, field_id: fieldsFinds[0] }));
+          console.log("check init",init)
+          return init.insertedId
       } else {
-        return new ObjectId(techFind._id);
+        console.log("check duiu",techFind._id)
+        return (techFind._id);
       }
     })
   );
+  console.log("check skill",skills,skillsFinds)
   const Employer = await db.employer.findOne({_id:employer.user_id})
   if(Employer?.numberOffFree && Employer?.numberOffFree <=0){
     throw new ErrorWithStatus({
@@ -312,7 +314,7 @@ export const getListJobController = async (req: Request<ParamsDictionary, any, a
     city
   } = req.query;
   const pageNumber = Number(page) || 1;
-  const limitNumber = Number(limit) || 10;
+  const limitNumber = Number(limit) || 1000;
   const skip = (pageNumber - 1) * limitNumber;
   const filter: any = {
     employer_id: new ObjectId(req.body.decodeAuthorization.payload.userId)
@@ -745,15 +747,16 @@ export const inviteCandidateController = async (req: Request<ParamsDictionary, a
     })
   );
 
-  // sendMailInviteCandidate({
-  //   toAddress: candidate[0].candidate_info.email,
-  //   candidateName: candidate[0].candidate_info.name,
-  //   employerName: employer[0].employer_info.name,
-  //   jobTitle: job?.name || '',
-  //   jobId: job_id
-  // });
+sendMailInviteCandidate
+  sendMailInviteCandidate({
+    toAddress: candidate?.[0].email,
+    candidateName: candidate?.[0]?.candidate_info?.name,
+    employerName: employer?.[0]?.employer_info?.name,
+    jobTitle: job?.name || '',
+    jobId: ''
+  });
   res.status(200).json({
-    message: 'Mời phỏng vấn thành công'
+    message: 'Mời ứng viên thành công'
   });
 };
 
@@ -777,6 +780,77 @@ export const makeInterviewController = async (req: Request<ParamsDictionary, any
       }
     }
   );
+  const jobInfo = await db.apply.aggregate([
+  {
+    $match: {
+      _id: new ObjectId(id)
+    }
+  },
+  {
+    $lookup: {
+      from: 'Jobs',
+      localField: 'job_id',
+      foreignField: '_id',
+      as: 'job'
+    }
+  },
+  {
+    $unwind: '$job'
+  },
+   {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'candidate_id',
+      foreignField: '_id',
+      as: 'candidate_account'
+    }
+  },
+  {
+    $unwind: '$candidate_account'
+  },
+   {
+    $lookup: {
+      from: 'Candidates',
+      localField: 'candidate_account.user_id',
+      foreignField: '_id',
+      as: 'candidate_info'
+    }
+  },
+  {
+    $unwind: '$candidate_info'
+  },
+  {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'job.employer_id',
+      foreignField: '_id',
+      as: 'employer_account'
+    }
+  },
+  {
+    $unwind: '$employer_account'
+  },
+  {
+    $lookup: {
+      from: 'Employers',
+      localField: 'employer_account.user_id',
+      foreignField: '_id',
+      as: 'employer_info'
+    }
+  },
+  {
+    $unwind: '$employer_info'
+  },
+]).toArray();
+
+sendMailInviteInterview({toAddress: jobInfo?.[0]?.candidate_account?.email,
+    candidateName: jobInfo?.[0]?.candidate_info?.name,
+    employerName: jobInfo?.[0]?.employer_info?.name,
+    jobTitle: jobInfo?.[0]?.job?.name,
+    interview: jobInfo?.[0]?.interview_employee_suggest_schedule,
+    contactEmail: jobInfo?.[0]?.employer_account?.email})
+
+    console.log("check jobInfo",jobInfo)
   res.status(200).json({
     message: 'Mời phỏng vấn thành công'
   });
@@ -794,6 +868,77 @@ export const candidateChangeInterviewSchedule = async (req: Request<ParamsDictio
       }
     }
   );
+ const jobInfo = await db.apply.aggregate([
+  {
+    $match: {
+      _id: new ObjectId(id)
+    }
+  },
+  {
+    $lookup: {
+      from: 'Jobs',
+      localField: 'job_id',
+      foreignField: '_id',
+      as: 'job'
+    }
+  },
+  {
+    $unwind: '$job'
+  },
+   {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'candidate_id',
+      foreignField: '_id',
+      as: 'candidate_account'
+    }
+  },
+  {
+    $unwind: '$candidate_account'
+  },
+   {
+    $lookup: {
+      from: 'Candidates',
+      localField: 'candidate_account.user_id',
+      foreignField: '_id',
+      as: 'candidate_info'
+    }
+  },
+  {
+    $unwind: '$candidate_info'
+  },
+  {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'job.employer_id',
+      foreignField: '_id',
+      as: 'employer_account'
+    }
+  },
+  {
+    $unwind: '$employer_account'
+  },
+  {
+    $lookup: {
+      from: 'Employers',
+      localField: 'employer_account.user_id',
+      foreignField: '_id',
+      as: 'employer_info'
+    }
+  },
+  {
+    $unwind: '$employer_info'
+  },
+]).toArray();
+
+console.log("check jo",jobInfo)
+sendMailCandidateChangeSchedule({toAddress: jobInfo?.[0]?.employer_account?.email,
+    candidateName: jobInfo?.[0]?.candidate_info?.name,
+    employerName: jobInfo?.[0]?.employer_info?.name,
+    jobTitle: jobInfo?.[0]?.job?.name,
+    scheduleChange: jobInfo?.[0]?.interview_candidate_suggest_schedule,
+    jobId: ''})
+  
   res.status(200).json({
     message: 'Đổi lại phỏng vấn thành công'
   });
@@ -821,6 +966,77 @@ export const acceptScheduleController = async (req: Request<ParamsDictionary, an
       { $set: { status: ApplyStatus.Interview, interview_final_schedule: apply.interview_candidate_suggest_schedule } }
     );
   }
+   const jobInfo = await db.apply.aggregate([
+  {
+    $match: {
+      _id: new ObjectId(id)
+    }
+  },
+  {
+    $lookup: {
+      from: 'Jobs',
+      localField: 'job_id',
+      foreignField: '_id',
+      as: 'job'
+    }
+  },
+  {
+    $unwind: '$job'
+  },
+   {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'candidate_id',
+      foreignField: '_id',
+      as: 'candidate_account'
+    }
+  },
+  {
+    $unwind: '$candidate_account'
+  },
+   {
+    $lookup: {
+      from: 'Candidates',
+      localField: 'candidate_account.user_id',
+      foreignField: '_id',
+      as: 'candidate_info'
+    }
+  },
+  {
+    $unwind: '$candidate_info'
+  },
+  {
+    $lookup: {
+      from: 'Accounts',
+      localField: 'job.employer_id',
+      foreignField: '_id',
+      as: 'employer_account'
+    }
+  },
+  {
+    $unwind: '$employer_account'
+  },
+  {
+    $lookup: {
+      from: 'Employers',
+      localField: 'employer_account.user_id',
+      foreignField: '_id',
+      as: 'employer_info'
+    }
+  },
+  {
+    $unwind: '$employer_info'
+  },
+]).toArray();
+
+console.log("check jo",jobInfo)
+sendMailCandidateChangeSchedule({toAddress: jobInfo?.[0]?.employer_account?.email,
+    candidateName: jobInfo?.[0]?.candidate_info?.name,
+    employerName: jobInfo?.[0]?.employer_info?.name,
+    jobTitle: jobInfo?.[0]?.job?.name,
+    scheduleChange: jobInfo?.[0]?.interview_candidate_suggest_schedule,
+    jobId: ''})
+
   res.status(200).json({
     message: 'Đồng ý phỏng vấn thành công'
   });
