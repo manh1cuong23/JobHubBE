@@ -258,7 +258,7 @@ class UsersService {
       { _id: new ObjectId(userId) },
       { $set: { verify_email_token: emailVerifyToken } }
     );
-    // isNotOauth && sendVerifyEmail(payload.email, emailVerifyToken, SendEmail.VerifyEmail);
+    isNotOauth && sendVerifyEmail(payload.email, emailVerifyToken, SendEmail.VerifyEmail);
     return {
       accessToken,
       refreshToken

@@ -74,13 +74,16 @@
           Sau khi xem xét hồ sơ, chúng tôi rất ấn tượng với kinh nghiệm và kỹ năng của bạn, và xin trân trọng mời bạn tham gia buổi phỏng vấn theo thông tin sau:
         </p>
         <ul>
-          <li><strong>Thời gian:</strong> {{interviewDate}} lúc {{interviewTime}}</li>
-          <li><strong>Hình thức:</strong> {{interviewType}} {{#if interviewLink}}– <a href="{{interviewLink}}" target="_blank">Tham gia tại đây</a>{{/if}}</li>
-          <li><strong>Địa điểm (nếu offline):</strong> {{interviewLocation}}</li>
-          <li><strong>Người phỏng vấn:</strong> {{interviewerName}}</li>
+          <li><strong>Thời gian:</strong> {{interviewDate}} vào lúc {{interviewTime2}}</li>
+          <li><strong>Thời lượng:</strong> {{interviewTime}}</li>
+          <li><strong>Ghi chú:</strong> {{interviewNote}}</li>
+          <li><strong>Tại</strong> <a href="{{interviewLink}}" target="_blank">{{interviewLink}}</a>
         </ul>
         <p>
           Nếu bạn cần thay đổi thời gian, vui lòng phản hồi lại email này hoặc liên hệ với chúng tôi qua: <a href="mailto:{{contactEmail}}">{{contactEmail}}</a>
+        </p>
+        <p>
+         Bạn vui lòng ấn xác nhận để chuyển đến trang việc làm của bạn và xác nhận phỏng vấn nếu bạn cảm thấy phù hợp.
         </p>
         <a class="btn" href="{{interviewConfirmationLink}}" target="_blank">Xác nhận tham gia phỏng vấn</a>
         <p style="margin-top: 30px;">
