@@ -48,7 +48,7 @@ export const getListCandicateController = async (req: Request<ParamsDictionary, 
   const { page, limit, email, name, phone_number, status, fields, skills, user_id } = req.query;
   const userIdStr = user_id as string;
   const pageNum = parseInt(page as string) || 1;
-  const limitNum = parseInt(limit as string) || 10;
+  const limitNum = parseInt(limit as string) || 1000;
   const skipNum = (pageNum - 1) * limitNum;
 
   const matchConditions: any = {};

@@ -173,7 +173,7 @@ export const sendMailUnsuitableCV = async (payload: {
     .replace('{{jobTitle}}', payload.jobTitle)
     .replace('{{websiteUrl}}', env.clientUrl)
     .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`)
-    .replace('{{jobListLink}}', `${env.clientUrl}/jobs`);
+    .replace('{{jobListLink}}', `${env.clientUrl}/list-job`);
 
   try {
     const info = await transporter.sendMail({
@@ -254,6 +254,134 @@ const time = dateObj.toLocaleTimeString('vi-VN', {
   }
 };
 
+export const sendMailCandicateAcceptInterview = async (payload: {
+  toAddress: string;
+  candidateName: string;
+  employerName: string;
+  jobTitle: string;
+  interview: InterviewInfo;
+  contactEmail: string;
+}) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: env.emailApp,
+      pass: env.emailAppPassword
+    }
+  });
+
+  const template = fs.readFileSync(path.resolve('src/templates/acceptInterview.html'), 'utf8');
+  console.log('interviewLink:', payload?.interview?.address);
+  
+const dateObj = new Date(payload.interview.date);
+
+// Format thành dd/mm/yyyy
+const date = dateObj.toLocaleDateString('vi-VN'); // ví dụ: 16/05/2025
+
+// Format thành hh:mm
+const time = dateObj.toLocaleTimeString('vi-VN', {
+  hour: '2-digit',
+  minute: '2-digit',
+}); //
+  const body = template
+    .replace(/{{yourWebsiteName}}/g, 'JobHub')
+    .replace('{{candidateName}}', payload.candidateName)
+    .replace(/{{employerName}}/g, payload.employerName)
+    .replace('{{jobTitle}}', payload.jobTitle)
+    .replace('{{websiteUrl}}', env.clientUrl)
+    .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`)
+    .replace('{{interviewDate}}', date)
+    .replace('{{interviewTime2}}', time)
+    .replace('{{interviewTime}}', payload.interview.time)
+    .replace('{{interviewNote}}', payload.interview.note || '')
+    .replace('{{interviewType}}', payload.interview.type === 'online' ? 'Phỏng vấn online' : 'Phỏng vấn trực tiếp')
+    .replace(/{{interviewLink}}/g, payload.interview.address || '')
+    .replace('{{interviewLocation}}', payload.interview.location || 'N/A')
+    .replace('{{interviewerName}}', payload.interview.interviewerName)
+    .replace(/{{contactEmail}}/g, payload.contactEmail)
+    .replace('{{interviewConfirmationLink}}', `${env.clientUrl}/apply-jobs`);
+
+  try {
+    const info = await transporter.sendMail({
+      from: '"JobHub" <vocuong.jobhub@gmail.com>',
+      to: payload.toAddress,
+      subject: 'Ứng viên đã xác nhận phỏng vấn',
+      html: body
+    });
+    console.log('Email sent: ' + info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Error sending email: ', error);
+    throw error;
+  }
+};
+
+export const sendMailEmployerAcceptInterview = async (payload: {
+  toAddress: string;
+  candidateName: string;
+  employerName: string;
+  jobTitle: string;
+  interview: InterviewInfo;
+  contactEmail: string;
+}) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: env.emailApp,
+      pass: env.emailAppPassword
+    }
+  });
+
+  const template = fs.readFileSync(path.resolve('src/templates/acceptInterviewByemployer.html'), 'utf8');
+  console.log('interviewLink:', payload?.interview?.address);
+  
+const dateObj = new Date(payload.interview.date);
+
+// Format thành dd/mm/yyyy
+const date = dateObj.toLocaleDateString('vi-VN'); // ví dụ: 16/05/2025
+
+// Format thành hh:mm
+const time = dateObj.toLocaleTimeString('vi-VN', {
+  hour: '2-digit',
+  minute: '2-digit',
+}); //
+  const body = template
+    .replace(/{{yourWebsiteName}}/g, 'JobHub')
+    .replace('{{candidateName}}', payload.candidateName)
+    .replace(/{{employerName}}/g, payload.employerName)
+    .replace('{{jobTitle}}', payload.jobTitle)
+    .replace('{{websiteUrl}}', env.clientUrl)
+    .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`)
+    .replace('{{interviewDate}}', date)
+    .replace('{{interviewTime2}}', time)
+    .replace('{{interviewTime}}', payload.interview.time)
+    .replace('{{interviewNote}}', payload.interview.note || '')
+    .replace('{{interviewType}}', payload.interview.type === 'online' ? 'Phỏng vấn online' : 'Phỏng vấn trực tiếp')
+    .replace(/{{interviewLink}}/g, payload.interview.address || '')
+    .replace('{{interviewLocation}}', payload.interview.location || 'N/A')
+    .replace('{{interviewerName}}', payload.interview.interviewerName)
+    .replace(/{{contactEmail}}/g, payload.contactEmail)
+    .replace('{{interviewConfirmationLink}}', `${env.clientUrl}/apply-jobs`);
+
+  try {
+    const info = await transporter.sendMail({
+      from: '"JobHub" <vocuong.jobhub@gmail.com>',
+      to: payload.toAddress,
+      subject: 'Nhà tuyển dụng đã xác nhận đồng ý phỏng vấn',
+      html: body
+    });
+    console.log('Email sent: ' + info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Error sending email: ', error);
+    throw error;
+  }
+};
+
 export const sendMailPassInterview = async (payload: {
   toAddress: string;
   candidateName: string;
@@ -274,7 +402,7 @@ export const sendMailPassInterview = async (payload: {
   const body = template
     .replace(/{{yourWebsiteName}}/g, 'JobHub')
     .replace('{{candidateName}}', payload.candidateName)
-    .replace('{{employerName}}', payload.employerName)
+    .replace(/{{employerName}}/g, payload.employerName)
     .replace('{{jobTitle}}', payload.jobTitle)
     .replace('{{websiteUrl}}', env.clientUrl)
     .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`)
@@ -317,7 +445,7 @@ export const sendMailFailInterview = async (payload: {
     .replace('{{candidateName}}', payload.candidateName)
     .replace('{{employerName}}', payload.employerName)
     .replace('{{jobTitle}}', payload.jobTitle)
-    .replace('{{websiteUrl}}', env.clientUrl)
+    .replace(/{{websiteUrl}}/g, env.clientUrl)
     .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`);
 
   try {
@@ -401,11 +529,11 @@ export const sendMailCandidateAcceptInvite = async (payload: {
     .replace(/{{yourWebsiteName}}/g, 'JobHub')
     .replace(/{{candidateName}}/g, payload.candidateName)
     .replace('{{employerName}}', payload.employerName)
-    .replace('{{jobTitle}}', payload.jobTitle)
+    .replace(/{{jobTitle}}/g, payload.jobTitle)
     .replace('{{websiteUrl}}', env.clientUrl)
     .replace('{{logoUrl}}', `${env.clientUrl}/images/logo.png`)
     .replace('{{acceptedDate}}', payload.acceptedDate)
-    .replace('{{employerDashboardUrl}}', `${env.clientUrl}/employer/${payload.employerId}/candidates`);
+    .replace('{{employerDashboardUrl}}', `${env.clientUrl}/recruiter/management/job`);
 
   try {
     const info = await transporter.sendMail({

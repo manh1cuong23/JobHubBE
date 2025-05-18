@@ -224,7 +224,7 @@ export const makeInActivejob = async (req: Request<ParamsDictionary, any, any>, 
 export const getListEvaluationAdminController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { page, limit,nameEmployer,nameCandicate } = req.query;
   const pageNum = parseInt(page as string) || 1;
-  const limitNum = parseInt(limit as string) || 10;
+  const limitNum = parseInt(limit as string) || 1000;
   const skipNum = (pageNum - 1) * limitNum;
 
   const totalRecords = await db.evaluations.countDocuments();

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lịch phỏng vấn được xác nhận - {{yourWebsiteName}}</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 650px;
+        margin: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      }
+      .header {
+        background-color: #2980b9;
+        color: #fff;
+        padding: 30px 20px;
+        text-align: center;
+      }
+      .header img {
+        max-height: 50px;
+        margin-bottom: 10px;
+      }
+      .content {
+        padding: 30px;
+        color: #333;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+      .footer {
+        text-align: center;
+        font-size: 13px;
+        color: #888;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      a {
+        color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="{{logoUrl}}" alt="{{yourWebsiteName}} Logo" />
+        <h2>{{yourWebsiteName}}</h2>
+        <p>Kết nối đúng người – Đúng việc</p>
+      </div>
+      <div class="content">
+        <h2>Lịch phỏng vấn của bạn đã được xác nhận</h2>
+        <p>Chào <strong>{{candidateName}}</strong>,</p>
+
+        <p>
+          Nhà tuyển dụng <strong>{{employerName}}</strong> đã đồng ý với lịch phỏng vấn mà bạn đề xuất cho vị trí 
+          <strong>{{jobTitle}}</strong>.
+        </p>
+
+        <p><strong>Thông tin phỏng vấn đã xác nhận:</strong></p>
+        <ul>
+          <li><strong>Thời gian:</strong> {{interviewDate}} vào lúc {{interviewTime2}}</li>
+          <li><strong>Thời lượng:</strong> {{interviewTime}}</li>
+          <li><strong>Hình thức:</strong> <a href="{{interviewLink}}" target="_blank">{{interviewLink}}</a></li>
+          <li><strong>Ghi chú:</strong> {{interviewNote}}</li>
+        </ul>
+
+        <p>
+          Vui lòng kiểm tra kỹ thông tin, chuẩn bị tốt cho buổi phỏng vấn và tham gia đúng giờ.
+        </p>
+
+        <p style="margin-top: 30px;">
+          Chúc bạn phỏng vấn thành công!<br />
+          <em>{{yourWebsiteName}} – Đồng hành cùng hành trình nghề nghiệp của bạn</em>
+        </p>
+      </div>
+      <div class="footer">
+        © 2025 {{yourWebsiteName}} • <a href="{{websiteUrl}}">Truy cập website</a>
+      </div>
+    </div>
+  </body>
+</html>
