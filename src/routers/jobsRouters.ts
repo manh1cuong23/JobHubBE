@@ -20,7 +20,8 @@ import {
   acceptScheduleController,
   candidateChangeInterviewSchedule,
   getListCountCandidateController,
-  changeStatusJob
+  changeStatusJob,
+  candidateRejectInvite
 } from '~/controllers/jobsControllers';
 const router = Router();
 
@@ -49,6 +50,7 @@ router.post('/make-fail/:id', accessTokenValidator, catchError(makeFailControlle
 
 router.post('/invite/:id', accessTokenValidator, catchError(inviteCandidateController));
 router.post('/candidate-accept-invite/:id', accessTokenValidator, catchError(candidateAcceptInvite));
+router.post('/candidate-reject-invite/:id', accessTokenValidator, catchError(candidateRejectInvite));
 
 router.post('/accept-schedule/:id', accessTokenValidator, catchError(acceptScheduleController));
 

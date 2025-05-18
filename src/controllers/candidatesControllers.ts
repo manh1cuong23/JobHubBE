@@ -220,12 +220,12 @@ export const searchJobController = async (req: Request<ParamsDictionary, any, an
     city
   } = req.query;
   const pageNumber = Number(page) || 1;
-  const limitNumber = Number(limit) || 10;
+  const limitNumber = Number(limit) || 1000;
   const skip = (pageNumber - 1) * limitNumber;
   const filter: any = {};
   const roleUser = req.body.decodeAuthorization.payload.role;
   if(Number(roleUser as string) == UserRole.Candidate){
-    filter.status = { $ne: JobStatus.Created }; 
+    filter.status = { $eq: JobStatus.Recuriting }; 
   }
   if (key) {
     filter.name = { $regex: key as string, $options: 'i' };

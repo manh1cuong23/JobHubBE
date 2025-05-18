@@ -19,7 +19,6 @@ interface EmployerType {
   city?:number;
   images?:any
   numberOffFree?:number
-  orderCode?:number
 }
 
 export class Employer {
@@ -40,7 +39,6 @@ export class Employer {
   city:number;
   images?:any
   numberOffFree?:number
-  orderCode?:number
 
   constructor(employer: EmployerType) {
     this._id = employer._id || new ObjectId();
@@ -60,6 +58,5 @@ export class Employer {
     this.city = employer.city || 0;
     this.images = employer.images || {};
     this.numberOffFree = employer.numberOffFree || 2
-    this.orderCode = employer.orderCode || 0
   }
 }
