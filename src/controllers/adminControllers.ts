@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ObjectId } from 'mongodb';
+import { ICreateUpdateBlog } from '~/models/requests/BlogRequests';
+import { Blog } from '~/models/schemas/BlogSchema';
 import db from '~/services/databaseServices';
 
 export const getListAccountController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { page, limit, email,key,name, phone_number, status,active, role } = req.query;
+  const { page, limit, email, key, name, phone_number, status, active, role } = req.query;
   const pageNum = parseInt(page as string) || 1;
   const limitNum = parseInt(limit as string) || 10;
   const skipNum = (pageNum - 1) * limitNum;
@@ -13,7 +15,7 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
 
   if (key) {
     matchConditions.email = { $regex: key, $options: 'i' };
-    
+
   }
   if (email) {
     matchConditions.email = { $regex: email, $options: 'i' };
@@ -21,13 +23,13 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
   if (role) {
     matchConditions.role = parseInt(role as string);
   }
-  if (  
+  if (
     status !== undefined &&
-    status !== null)  {
+    status !== null) {
     matchConditions.status = parseInt(status as string);
   }
-  if (  
-    active !== undefined &&   
+  if (
+    active !== undefined &&
     active !== null) {
     matchConditions.active = active == '1' ? true : false;
   }
@@ -70,19 +72,19 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
           $and: [
             name
               ? {
-                  $or: [
-                    { 'employer_info.name': { $regex: name, $options: 'i' } },
-                    { 'candidate_info.name': { $regex: name, $options: 'i' } }
-                  ]
-                }
+                $or: [
+                  { 'employer_info.name': { $regex: name, $options: 'i' } },
+                  { 'candidate_info.name': { $regex: name, $options: 'i' } }
+                ]
+              }
               : {},
             phone_number
               ? {
-                  $or: [
-                    { 'employer_info.phone_number': { $regex: phone_number } },
-                    { 'candidate_info.phone_number': { $regex: phone_number } }
-                  ]
-                }
+                $or: [
+                  { 'employer_info.phone_number': { $regex: phone_number } },
+                  { 'candidate_info.phone_number': { $regex: phone_number } }
+                ]
+              }
               : {}
           ]
         }
@@ -132,19 +134,19 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
           $and: [
             name
               ? {
-                  $or: [
-                    { 'employer_info.name': { $regex: name, $options: 'i' } },
-                    { 'candidate_info.name': { $regex: name, $options: 'i' } }
-                  ]
-                }
+                $or: [
+                  { 'employer_info.name': { $regex: name, $options: 'i' } },
+                  { 'candidate_info.name': { $regex: name, $options: 'i' } }
+                ]
+              }
               : {},
             phone_number
               ? {
-                  $or: [
-                    { 'employer_info.phone_number': { $regex: phone_number } },
-                    { 'candidate_info.phone_number': { $regex: phone_number } }
-                  ]
-                }
+                $or: [
+                  { 'employer_info.phone_number': { $regex: phone_number } },
+                  { 'candidate_info.phone_number': { $regex: phone_number } }
+                ]
+              }
               : {}
           ]
         }
@@ -167,10 +169,10 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
 };
 
 
-export const makeActiveAccount = async (req: Request<ParamsDictionary, any, any>, res: Response)=>{
-  const {id} = req?.params;
+export const makeActiveAccount = async (req: Request, res: Response) => {
+  const { id } = req?.params;
   const idObject = new ObjectId(id)
-  const account = await db.accounts.findOne({ _id:  idObject});
+  const account = await db.accounts.findOne({ _id: idObject });
   if (!account) {
     throw new Error('Account not found');
   }
@@ -180,10 +182,10 @@ export const makeActiveAccount = async (req: Request<ParamsDictionary, any, any>
   });
 }
 
-export const makeInActiveAccount = async (req: Request<ParamsDictionary, any, any>, res: Response)=>{
-  const {id} = req?.params;
+export const makeInActiveAccount = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { id } = req?.params;
   const idObject = new ObjectId(id)
-  const account = await db.accounts.findOne({ _id:  idObject});
+  const account = await db.accounts.findOne({ _id: idObject });
   if (!account) {
     throw new Error('Account not found');
   }
@@ -194,27 +196,27 @@ export const makeInActiveAccount = async (req: Request<ParamsDictionary, any, an
 }
 
 
-export const makeActiveJob = async (req: Request<ParamsDictionary, any, any>, res: Response)=>{
-  const {id} = req?.params;
+export const makeActiveJob = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { id } = req?.params;
   const idObject = new ObjectId(id)
-  const account = await db.jobs.findOne({ _id:  idObject});
+  const account = await db.jobs.findOne({ _id: idObject });
   if (!account) {
     throw new Error('Account not found');
   }
-  await db.jobs.updateOne({_id:idObject}, { $set: { active: true } })
+  await db.jobs.updateOne({ _id: idObject }, { $set: { active: true } })
   res.status(200).json({
     message: 'active job suscess'
   });
 }
 
-export const makeInActivejob = async (req: Request<ParamsDictionary, any, any>, res: Response)=>{
-  const {id} = req?.params;
+export const makeInActivejob = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { id } = req?.params;
   const idObject = new ObjectId(id)
-  const job = await db.jobs.findOne({ _id:  idObject});
+  const job = await db.jobs.findOne({ _id: idObject });
   if (!job) {
     throw new Error('job not found');
   }
-  await db.jobs.updateOne({_id:idObject}, { $set: { active: false } })
+  await db.jobs.updateOne({ _id: idObject }, { $set: { active: false } })
   res.status(200).json({
     message: 'inactive job suscess'
   });
@@ -222,7 +224,7 @@ export const makeInActivejob = async (req: Request<ParamsDictionary, any, any>, 
 
 
 export const getListEvaluationAdminController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
-  const { page, limit,nameEmployer,nameCandicate } = req.query;
+  const { page, limit, nameEmployer, nameCandicate } = req.query;
   const pageNum = parseInt(page as string) || 1;
   const limitNum = parseInt(limit as string) || 1000;
   const skipNum = (pageNum - 1) * limitNum;
@@ -259,15 +261,15 @@ export const getListEvaluationAdminController = async (req: Request<ParamsDictio
       },
       ...(nameEmployer
         ? [
-            {
-              $match: {
-                'employer_info.name': {
-                  $regex: nameEmployer as string,
-                  $options: 'i' // Không phân biệt hoa thường
-                }
+          {
+            $match: {
+              'employer_info.name': {
+                $regex: nameEmployer as string,
+                $options: 'i' // Không phân biệt hoa thường
               }
             }
-          ]
+          }
+        ]
         : []),
       {
         $lookup: {
@@ -282,15 +284,15 @@ export const getListEvaluationAdminController = async (req: Request<ParamsDictio
       },
       ...(nameCandicate
         ? [
-            {
-              $match: {
-                'candidate_info.name': {
-                  $regex: nameCandicate as string,
-                  $options: 'i' // Không phân biệt hoa thường
-                }
+          {
+            $match: {
+              'candidate_info.name': {
+                $regex: nameCandicate as string,
+                $options: 'i' // Không phân biệt hoa thường
               }
             }
-          ]
+          }
+        ]
         : []),
       { $skip: skipNum },
       { $limit: limitNum }
@@ -298,8 +300,8 @@ export const getListEvaluationAdminController = async (req: Request<ParamsDictio
     .toArray();
 
   // Tính thống kê rate và phần trăm isEncouragedToWorkHere
- 
- 
+
+
 
   res.status(200).json({
     message: 'Lấy danh sách đánh giá thành công',
@@ -313,15 +315,137 @@ export const getListEvaluationAdminController = async (req: Request<ParamsDictio
   });
 };
 
-export const makeActiveEnvalution = async (req: Request<ParamsDictionary, any, any>, res: Response)=>{
-  const {id} = req?.params;
+export const makeActiveEnvalution = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { id } = req?.params;
   const idObject = new ObjectId(id)
-  const job = await db.evaluations.findOne({ _id:  idObject});
+  const job = await db.evaluations.findOne({ _id: idObject });
   if (!job) {
     throw new Error('Envalution not found');
   }
-  await db.evaluations.updateOne({_id:idObject}, { $set: { status: true } })
+  await db.evaluations.updateOne({ _id: idObject }, { $set: { status: true } })
   res.status(200).json({
     message: 'inactive job suscess'
   });
 }
+
+export const createBlog = async (req: Request, res: Response) => {
+  try {
+    const { title, content, avatar } = req.body as ICreateUpdateBlog;
+    const blog = await db.blogs.findOne({ title });
+    if (blog) {
+      res.status(200).json({
+        message: 'Tiêu đề blog đã tồn tại',
+        data: null
+      });
+    }
+    const createdBlog = await db.blogs.insertOne(new Blog({ title, content, avatar }));
+    res.status(200).json({
+      message: 'Tạo blog thành công',
+      data: createdBlog
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+};
+
+export const updateBlog = async (req: Request, res: Response) => {
+  try {
+    const { blog_id, title } = req.body as ICreateUpdateBlog;
+    const checkExist = await db.blogs.findOne({
+      _id: new ObjectId(`${blog_id}`)
+    })
+    if (!checkExist) {
+      throw new Error('Blog not found');
+    }
+    const blog = await db.blogs.findOne({
+      title,
+      _id: {
+        $ne: blog_id
+      }
+    });
+    if (blog) {
+      res.status(200).json({
+        message: 'Tiêu đề blog đã tồn tại',
+        data: null
+      });
+    }
+    const updatedBlog = await db.blogs.updateOne(
+      {
+        _id: new ObjectId(`${blog_id}`)
+      },
+      {
+        $set: req.body
+      }
+    );
+    res.status(200).json({
+      message: 'Chỉnh sửa blog thành công',
+      data: updatedBlog
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+};
+
+export const getListBlog = async (req: Request, res: Response) => {
+  try {
+    const { page, limit } = req.query;
+    const pageNum = parseInt(page as string) || 1;
+    const limitNum = parseInt(limit as string) || 10;
+    const skipNum = (pageNum - 1) * limitNum;
+    const blogs = db.blogs.find().skip(skipNum).limit(limitNum).toArray();
+    const totalRecords = db.blogs.countDocuments();
+    const result = await Promise.all([blogs, totalRecords])
+    res.status(200).json({
+      message: 'Lấy danh sách blog thành công',
+      result: result[0],
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total_pages: Math.ceil(result[1] / limitNum),
+        total_records: result[1]
+      }
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+}
+
+export const getDetailBlog = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const blog = db.blogs.findOneAndUpdate(
+      { _id: new ObjectId(`${id}`) },
+      {
+        $inc: {
+          view: 1
+        }
+      }
+    )
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+    res.status(200).json({
+      message: 'Lấy blog thành công',
+      result: blog
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+}
+
+export const deleteBlog = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const blog = db.blogs.findOneAndDelete({ _id: new ObjectId(`${id}`) });
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+    res.status(200).json({
+      message: 'Xoá blog thành công',
+      result: blog
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+}
+

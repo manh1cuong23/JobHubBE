@@ -15,6 +15,7 @@ import { Transaction } from '~/models/schemas/Transaction';
 import { Apply } from '~/models/schemas/ApplySchema';
 import { VerifyEmployer } from '~/models/schemas/VerifySchema';
 import { Evaluation } from '~/models/schemas/EvaluationSchema';
+import { Blog } from '~/models/schemas/BlogSchema';
 
 const uri = env.mongodbURI;
 
@@ -78,6 +79,9 @@ class DatabaseServices {
   }
   get transactions(): Collection<Transaction> {
     return this.db.collection('Transactions');
+  }
+  get blogs(): Collection<Blog> {
+    return this.db.collection('Blogs');
   }
 }
 
