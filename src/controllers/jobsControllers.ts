@@ -344,7 +344,11 @@ export const getListJobController = async (req: Request<ParamsDictionary, any, a
     const createdAtFilter: any = {};
 
     if (from) createdAtFilter.$gte = new Date(from);
-    if (to) createdAtFilter.$lte = new Date(to);
+   if (to) {
+  const toDate = new Date(to as string);
+  toDate.setDate(toDate.getDate() + 1); // Cộng thêm 1 ngày
+  createdAtFilter.$lt = toDate;         // Dùng $lt thay vì $lte
+}
 
     if (Object.keys(createdAtFilter).length > 0) {
       filter.createdAt = createdAtFilter;

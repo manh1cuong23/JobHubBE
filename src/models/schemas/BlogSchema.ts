@@ -6,6 +6,8 @@ interface BlogType {
   title: string;
   content: string;
   view?: number;
+  created_at?:Date
+  status?:boolean
 }
 
 export class Blog {
@@ -14,6 +16,8 @@ export class Blog {
   title: string;
   content: string;
   view?: number;
+  created_at?:Date
+  status?:boolean
 
   constructor(blog: BlogType) {
     this._id = blog._id || new ObjectId();
@@ -21,5 +25,8 @@ export class Blog {
     this.title = blog.title;
     this.content = blog.content;
     this.view = blog.view || 0;
+    this.created_at=blog.created_at || new Date()
+    this.status=blog.status  || true
+
   }
 }

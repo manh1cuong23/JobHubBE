@@ -10,7 +10,6 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
   const pageNum = parseInt(page as string) || 1;
   const limitNum = parseInt(limit as string) || 10;
   const skipNum = (pageNum - 1) * limitNum;
-
   const matchConditions: any = {};
 
   if (key) {
@@ -33,7 +32,6 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
     active !== null) {
     matchConditions.active = active == '1' ? true : false;
   }
-
   const totalRecords = await db.accounts
     .aggregate([
       {
@@ -70,7 +68,7 @@ export const getListAccountController = async (req: Request<ParamsDictionary, an
       {
         $match: {
           $and: [
-            name
+          name
               ? {
                 $or: [
                   { 'employer_info.name': { $regex: name, $options: 'i' } },
@@ -351,31 +349,24 @@ export const createBlog = async (req: Request, res: Response) => {
 export const updateBlog = async (req: Request, res: Response) => {
   try {
     const { blog_id, title } = req.body as ICreateUpdateBlog;
+    console.log("chec req",req.body)
     const checkExist = await db.blogs.findOne({
       _id: new ObjectId(`${blog_id}`)
     })
     if (!checkExist) {
       throw new Error('Blog not found');
     }
-    const blog = await db.blogs.findOne({
-      title,
-      _id: {
-        $ne: blog_id
-      }
-    });
-    if (blog) {
-      res.status(200).json({
-        message: 'Tiêu đề blog đã tồn tại',
-        data: null
-      });
-    }
     const updatedBlog = await db.blogs.updateOne(
       {
         _id: new ObjectId(`${blog_id}`)
       },
       {
-        $set: req.body
+      $set: {
+        title:req.body?.title,
+        content:req.body?.content,
+        avatar:req.body?.avatar,
       }
+    }
     );
     res.status(200).json({
       message: 'Chỉnh sửa blog thành công',
@@ -386,13 +377,57 @@ export const updateBlog = async (req: Request, res: Response) => {
   }
 };
 
+export const detailBlog = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const checkExist = await db.blogs.findOne({
+      _id: new ObjectId(`${id}`)
+    })
+   
+    res.status(200).json({
+      message: 'detail blog',
+      data: checkExist
+    });
+  } catch (error: any) {
+    throw new Error(error.toString());
+  }
+};
+
+
 export const getListBlog = async (req: Request, res: Response) => {
   try {
     const { page, limit } = req.query;
+    const {created_at,title,status} = req.query
     const pageNum = parseInt(page as string) || 1;
-    const limitNum = parseInt(limit as string) || 10;
+    const limitNum = parseInt(limit as string) || 1000;
     const skipNum = (pageNum - 1) * limitNum;
-    const blogs = db.blogs.find().skip(skipNum).limit(limitNum).toArray();
+    const filter: any = {};
+    if (title) {
+  filter.title = { $regex: title, $options: 'i' }; // 'i' để không phân biệt hoa thường
+}
+if (status !== undefined) {
+  // Ép kiểu về boolean vì query string luôn là string
+  filter.status = status === 'true';
+}
+
+// Tìm kiếm theo created_at (nếu có fromDate và toDate)
+console.log("created_at",created_at)
+if (Array.isArray(created_at) && created_at.length === 2) {
+    const [from, to] = created_at;
+    const createdAtFilter: any = {};
+
+    if (from) createdAtFilter.$gte = new Date(from as string);
+    if (to) {
+  const toDate = new Date(to as string);
+  toDate.setDate(toDate.getDate() + 1); // Cộng thêm 1 ngày
+  createdAtFilter.$lt = toDate;         // Dùng $lt thay vì $lte
+}
+
+    if (Object.keys(createdAtFilter).length > 0) {
+      filter.created_at = createdAtFilter;
+    }
+  }
+    const blogs = db.blogs.find(filter).skip(skipNum).limit(limitNum).toArray();
     const totalRecords = db.blogs.countDocuments();
     const result = await Promise.all([blogs, totalRecords])
     res.status(200).json({
@@ -413,8 +448,9 @@ export const getListBlog = async (req: Request, res: Response) => {
 export const getDetailBlog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const blog = db.blogs.findOneAndUpdate(
-      { _id: new ObjectId(`${id}`) },
+    console.log('id',id)
+    const blog = await db.blogs.findOneAndUpdate(
+      { _id: new ObjectId(id) },
       {
         $inc: {
           view: 1

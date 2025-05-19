@@ -6,7 +6,17 @@ import db from "~/services/databaseServices";
 export const getPackageController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
     const limit = Number(req.query.limit as string);
     const pageInput = Number(req.query.page as string);
-    const result = await db.packages.find({}).toArray();
+     const {name,status} = req.query
+     const filter: any = {};
+       if (name) {
+          filter.name = { $regex: name, $options: 'i' }; // 'i' để không phân biệt hoa thường
+        }
+      if (status !== undefined) {
+        // Ép kiểu về boolean vì query string luôn là string
+        filter.status = status === 'true';
+      }
+      console.log("filter",filter)
+    const result = await db.packages.find(filter).toArray();
     res.status(200).json({
       result,
       message: 'Get package suscess'

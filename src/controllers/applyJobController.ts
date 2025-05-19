@@ -37,3 +37,57 @@ export const getinforAppyController = async (req: Request<ParamsDictionary, any,
       message: 'Lấy công việc thành công'
     });
 };
+
+
+export const getinforCandicateAppy = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+    const { id,user_id } = req.params;
+    const job = await db.apply
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(id)
+          }
+        },
+         {
+          $lookup: {
+            from: 'Accounts',
+            localField: 'candidate_id',
+            foreignField: '_id',
+            as: 'candicate_account'
+          }
+        },
+        {
+          $unwind: '$candicate_account'
+        },
+         {
+          $lookup: {
+            from: 'Candidates',
+            localField: 'candicate_account.user_id',
+            foreignField: '_id',
+            as: 'candidates_info'
+          }
+        },
+        {
+          $unwind: '$candidates_info'
+        },
+        {
+       $and: [
+        user_id
+          ? { 'candidates_info._id': new ObjectId(user_id) }
+          : {}
+      ]
+      },
+      ])
+      .toArray();
+  
+    if (!job[0]) {
+      return res.status(404).json({
+        message: 'Công việc không tồn tại'
+      });
+    }
+    const cityInfo = provinces.find((city: any) => city._id === job[0].city);
+    res.status(200).json({
+      result: { ...job[0], city_info: cityInfo },
+      message: 'Lấy công việc thành công'
+    });
+};

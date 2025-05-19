@@ -7,5 +7,6 @@ const router = Router();
 
 
 router.get('/:id', accessTokenValidator, catchError(getinforAppyController));
+router.get('/:id/candidate/:user_id', accessTokenValidator, catchError(getinforAppyController));
 
 export default router;
