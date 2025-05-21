@@ -5,6 +5,7 @@ import payos from '~/config/payos';
 import { PaymentRequest, PaymentResponse, WebhookData } from '~/constants/payos';
 import { Transaction } from '~/models/schemas/Transaction';
 import db from '~/services/databaseServices';
+import { env } from '../constants/config';
 export const createPaymentLink = async (req: Request, res: Response) => {
      const idUser = req.body.decodeAuthorization.payload.userId
      const data =  await db.accounts
@@ -64,9 +65,8 @@ export const createPaymentLink = async (req: Request, res: Response) => {
         orderCode:Date.now(),
         amount: Number(price),
         description: String(TransactionData.insertedId),
-        returnUrl: 'http://localhost:8889/recruiter/management/job',
-        cancelUrl: 'http://localhost:8889/recruiter/management/job',
-         webhookUrl: "https://2a89-2401-d800-5203-8089-fcc8-4f97-ec86-7738.ngrok-free.app/payment/webhook",
+        returnUrl: `${env.clientUrl}/recruiter/management/job`,
+        cancelUrl: `${env.clientUrl}/recruiter/management/job`,
       };
   
       const paymentLink = await payos.createPaymentLink(paymentData);

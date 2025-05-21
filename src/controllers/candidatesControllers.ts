@@ -462,7 +462,7 @@ export const searchJobController = async (req: Request<ParamsDictionary, any, an
   };
   res.status(200).json({
     result,
-    message: 'Lấy danh sách công việc thành công'
+    message: 'Lấy danh sách công việc thành công2'
   });
 };
 
