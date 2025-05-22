@@ -26,7 +26,8 @@ const app = express();
 const httpServer = createServer(app);
 
 const corsConfig: CorsOptions = {
-  origin: isProduction ? env.clientUrl : '*'
+  origin: '*'
+  // origin: isProduction ? env.clientUrl : '*'
 };
 
 app.use(helmet());
