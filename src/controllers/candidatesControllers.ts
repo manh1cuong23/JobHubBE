@@ -489,7 +489,7 @@ export const searchJobControllerDB = async (req: Request<ParamsDictionary, any, 
   const filter: any = {};
   const roleUser = req.body.decodeAuthorization.payload.role;
   if(Number(roleUser as string) == UserRole.Candidate){
-    filter.status = { $ne: JobStatus.Created }; 
+    filter.status = { $eq: JobStatus.Recuriting }; 
   }
   if (key) {
     filter.name = { $regex: key as string, $options: 'i' };

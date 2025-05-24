@@ -57,6 +57,6 @@ export class Employer {
     this.status = employer.status || 1;
     this.city = employer.city || 0;
     this.images = employer.images || {};
-    this.numberOffFree = employer.numberOffFree || 2
+    this.numberOffFree = employer.numberOffFree || 10
   }
 }

@@ -8,7 +8,7 @@ import db from '~/services/databaseServices';
 export const getListAccountController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { page, limit, email, key, name, phone_number, status, active, role } = req.query;
   const pageNum = parseInt(page as string) || 1;
-  const limitNum = parseInt(limit as string) || 10;
+  const limitNum = parseInt(limit as string) || 1000;
   const skipNum = (pageNum - 1) * limitNum;
   const matchConditions: any = {};
 
