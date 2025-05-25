@@ -153,12 +153,22 @@ const rawName = String(name)?.replace(/^"|"$/g, '');
 export const getRevenueAndSuccessController = async (req: Request, res: Response) => {
     const idUser = req.body.decodeAuthorization.payload.userId;
     const role = req.body.decodeAuthorization.payload.role;
-
+ const { name, createdAt } = req.query || req.params;
     let filter: any = { status: true }; // Chỉ lấy các giao dịch thành công
-
+ let createdAtF ;
+  if (typeof createdAt === 'string') {
+      createdAtF = JSON.parse(createdAt); // parse từ chuỗi JSON thành mảng
+  }
+  
+  if (Array.isArray(createdAtF) && createdAtF.length === 2) {
+    const [from, to]:any = createdAtF;
+    const createdAtFilter: any = {};
+    if (from) createdAtFilter.$gte = new Date(String(from).replace(/^"|"$/g, ''));
+    if (to) createdAtFilter.$lte = new Date(String(to).replace(/^"|"$/g, ''));
+    filter.createdAt = createdAtFilter;
+  }
     // Nếu là employer (role = 2), lọc theo employer_id
 
-    // Aggregate để tính tổng price và đếm số giao dịch thành công
     const result = await db.transactions
       .aggregate([
         { $match: filter },

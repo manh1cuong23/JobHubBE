@@ -485,3 +485,96 @@ export const deleteBlog = async (req: Request, res: Response) => {
   }
 }
 
+export const getOverViewJobController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
+  const { id } = req.params;
+  console.log("vco1")
+ const jobCountByField = await db.jobs.aggregate([
+  {
+    $unwind: '$fields' // nếu một job có nhiều field thì tách ra từng cái
+  },
+  {
+    $group: {
+      _id: '$fields',
+      total_jobs: { $sum: 1 }
+    }
+  },
+  {
+    $lookup: {
+      from: 'Fields',
+      localField: '_id',
+      foreignField: '_id',
+      as: 'field_info'
+    }
+  },
+  {
+    $unwind: '$field_info'
+  },
+  {
+    $project: {
+      _id: 0,
+      field_id: '$_id',
+      total_jobs: 1,
+      field_info: 1
+    }
+  }
+]).toArray();
+
+
+  res.status(200).json({
+    result: jobCountByField,
+    message: 'Lấy công việc thành công'
+  });
+};
+
+export const getOverTransactionController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response
+) => {
+  try {
+    const transactionsByWeek = await db.transactions.aggregate([
+      {
+        $match: {
+          createdAt: { $exists: true },
+           status: { $ne: null }
+        }
+      },
+      {
+        $addFields: {
+          year: { $isoWeekYear: '$createdAt' },
+          week: { $isoWeek: '$createdAt' }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            year: '$year',
+            week: '$week'
+          },
+          total_transactions: { $sum: 1 }
+        }
+      },
+      {
+        $sort: {
+          '_id.year': 1,
+          '_id.week': 1
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          year: '$_id.year',
+          week: '$_id.week',
+          total_transactions: 1
+        }
+      }
+    ]).toArray();
+
+    res.status(200).json({
+      result: transactionsByWeek,
+      message: 'Lấy thống kê giao dịch theo tuần thành công'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Đã xảy ra lỗi' });
+  }
+};

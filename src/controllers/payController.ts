@@ -78,13 +78,10 @@ export const createPaymentLink = async (req: Request, res: Response) => {
   export const handleWebhook = async (req: Request, res: Response) => {
     try {
       const webhookData = payos.verifyPaymentWebhookData(req.body) as any;
-  //       const { idTransaction, event, ...rest } = req.body;
-
-  // // Nếu không có idTransaction, có thể là webhook kiểm tra
-  //     if (!idTransaction) {
-  //       console.warn('Webhook không có idTransaction. Có thể là webhook kiểm tra từ PayOS.');
-  //       return res.status(200).send('Webhook ping OK'); // Trả về 200 OK để không bị retry
-  // }
+     if (!webhookData?.description|| !webhookData?.description?.split(" ")[1]) {
+      console.warn('Webhook test từ PayOS (không có description).');
+      return res.status(200).send('Webhook test OK'); // Trả về 200 để tránh retry
+    }
       const idTransaction2 = webhookData.description.split(" ")[1];
       const description = webhookData.description;
       if (webhookData.code === '00') {
