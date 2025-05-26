@@ -1,7 +1,7 @@
 import { accessTokenValidator, verifiedUserValidator } from '~/middlewares/usersMiddlewares';
 import { catchError } from '~/utils/handler';
 import { Router } from 'express';
-import { createBlog, deleteBlog, getDetailBlog, getListAccountController, getListBlog, getListEvaluationAdminController, getOverTransactionController, getOverViewJobController, makeActiveAccount, makeActiveEnvalution, makeInActiveAccount, updateBlog } from '~/controllers/adminControllers';
+import { createBlog, deleteBlog, getDetailBlog, getListAccountController, getListBlog, getListEvaluationAdminController, getOverAllController, getOverTransactionController, getOverViewJobController, makeActiveAccount, makeActiveEnvalution, makeInActiveAccount, updateBlog } from '~/controllers/adminControllers';
 import { searchJobController } from '~/controllers/candidatesControllers';
 
 const router = Router();
@@ -59,5 +59,6 @@ router.get('/getListBlog', accessTokenValidator, catchError(getListBlog));
 router.get('/getDetailBlog/:id', accessTokenValidator, catchError(getDetailBlog));
 router.get('/get-overview-job', accessTokenValidator, catchError(getOverViewJobController));
 router.get('/get-overview-transactions', accessTokenValidator, catchError(getOverTransactionController));
+router.get('/get-overview-all', accessTokenValidator, catchError(getOverAllController));
 
 export default router;

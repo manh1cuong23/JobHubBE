@@ -1489,7 +1489,7 @@ export const changeStatusJob = async (req: Request<ParamsDictionary, any, any>, 
   const {status} = req.query
   await db.jobs.updateOne({ _id: new ObjectId(id) }, { $set: { status: Number(status) as any } });
   res.status(200).json({
-    message: 'Chuyển trạng thái công việc thahf công'
+    message: 'Chuyển trạng thái công việc thành công'
   });
 };
 

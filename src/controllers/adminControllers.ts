@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ObjectId } from 'mongodb';
+import { JobStatus } from '~/constants/enum';
 import { ICreateUpdateBlog } from '~/models/requests/BlogRequests';
 import { Blog } from '~/models/schemas/BlogSchema';
 import db from '~/services/databaseServices';
@@ -578,3 +579,50 @@ export const getOverTransactionController = async (
     res.status(500).json({ message: 'Đã xảy ra lỗi' });
   }
 };
+
+export const getOverAllController = async (
+  req: Request<ParamsDictionary, any, any>,
+  res: Response
+) => {
+  try {
+    // Đếm tổng các bản ghi cần thiết
+    const [transactionsRes, employersRes, candidatesRes, jobsRes] = await Promise.all([
+      db.transactions.aggregate([
+        { $match: { status: true } },
+        { $count: "total" }
+      ]).toArray(),
+
+      db.employer.aggregate([{ $count: "total" }]).toArray(),
+
+      db.candidates.aggregate([{ $count: "total" }]).toArray(),
+
+      db.jobs.aggregate([
+        { $match: { status: JobStatus.Recuriting } },
+        { $count: "total" }
+      ]).toArray()
+    ]);
+
+    // Gán kết quả
+    const totalTransactions = transactionsRes[0]?.total || 0;
+    const totalEmployers = employersRes[0]?.total || 0;
+    const totalCandidates = candidatesRes[0]?.total || 0;
+    const totalJobs = jobsRes[0]?.total || 0;
+
+    // Trả về response
+    res.status(200).json({
+      result: {
+        transactions: totalTransactions,
+        employers: totalEmployers,
+        candidates: totalCandidates,
+        jobs: totalJobs
+      },
+      message: 'Lấy thống kê tổng thể thành công'
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Đã xảy ra lỗi' });
+  }
+};
+
+
