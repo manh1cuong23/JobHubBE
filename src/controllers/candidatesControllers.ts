@@ -33,8 +33,6 @@ export const applyJobController = async (req: Request<ParamsDictionary, any, any
     
   const job = await db.jobs.findOne({ _id: new ObjectId(jobId) });
 
-      console.log("candicate",candicate)
-      console.log("job",job)
   if (!job) {
     throw new ErrorWithStatus({
       message: 'Công việc không tồn tại',

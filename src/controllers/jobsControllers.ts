@@ -66,15 +66,12 @@ export const createJobController = async (req: Request<ParamsDictionary, any, an
       const techFind = await db.skills.findOne({ name: skill });
       if (!techFind) {
           const init = await db.skills.insertOne(new Skill({ name: skill, field_id: fieldsFinds[0] }));
-          console.log("check init",init)
           return init.insertedId
       } else {
-        console.log("check duiu",techFind._id)
         return (techFind._id);
       }
     })
   );
-  console.log("check skill",skills,skillsFinds)
   const Employer = await db.employer.findOne({_id:employer.user_id})
   if(Employer?.numberOffFree && Employer?.numberOffFree <=0){
     throw new ErrorWithStatus({
@@ -1075,7 +1072,6 @@ sendMailInviteInterview({toAddress: jobInfo?.[0]?.candidate_account?.email,
     interview: jobInfo?.[0]?.interview_employee_suggest_schedule,
     contactEmail: jobInfo?.[0]?.employer_account?.email})
 
-    console.log("check jobInfo",jobInfo)
   res.status(200).json({
     message: 'Mời phỏng vấn thành công'
   });
@@ -1156,7 +1152,6 @@ export const candidateChangeInterviewSchedule = async (req: Request<ParamsDictio
   },
 ]).toArray();
 
-console.log("check jo",jobInfo)
 sendMailCandidateChangeSchedule({toAddress: jobInfo?.[0]?.employer_account?.email,
     candidateName: jobInfo?.[0]?.candidate_info?.name,
     employerName: jobInfo?.[0]?.employer_info?.name,

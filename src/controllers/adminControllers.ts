@@ -350,7 +350,6 @@ export const createBlog = async (req: Request, res: Response) => {
 export const updateBlog = async (req: Request, res: Response) => {
   try {
     const { blog_id, title } = req.body as ICreateUpdateBlog;
-    console.log("chec req",req.body)
     const checkExist = await db.blogs.findOne({
       _id: new ObjectId(`${blog_id}`)
     })
@@ -412,7 +411,6 @@ if (status !== undefined) {
 }
 
 // Tìm kiếm theo created_at (nếu có fromDate và toDate)
-console.log("created_at",created_at)
 if (Array.isArray(created_at) && created_at.length === 2) {
     const [from, to] = created_at;
     const createdAtFilter: any = {};
@@ -449,7 +447,6 @@ if (Array.isArray(created_at) && created_at.length === 2) {
 export const getDetailBlog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log('id',id)
     const blog = await db.blogs.findOneAndUpdate(
       { _id: new ObjectId(id) },
       {
@@ -488,7 +485,6 @@ export const deleteBlog = async (req: Request, res: Response) => {
 
 export const getOverViewJobController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
   const { id } = req.params;
-  console.log("vco1")
  const jobCountByField = await db.jobs.aggregate([
   {
     $unwind: '$fields' // nếu một job có nhiều field thì tách ra từng cái

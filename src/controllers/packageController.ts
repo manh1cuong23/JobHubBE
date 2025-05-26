@@ -15,7 +15,6 @@ export const getPackageController = async (req: Request<ParamsDictionary, any, a
         // Ép kiểu về boolean vì query string luôn là string
         filter.status = status === 'true';
       }
-      console.log("filter",filter)
     const result = await db.packages.find(filter).toArray();
     res.status(200).json({
       result,

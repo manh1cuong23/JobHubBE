@@ -84,7 +84,6 @@ class UsersService {
   }
 
   async login(payload: LoginRequest) {
-    console.log(payload);
     const user = await db.accounts.findOne({ email: payload.email });
     if (!user) {
       throw new ErrorWithStatus({
@@ -98,7 +97,7 @@ class UsersService {
           message: 'Tài khoản chưa được xác thực. Vui lòng kiểm tra email để xác nhận.'
         });
       }
-      if (user.status === UserVerifyStatus.Banned) {
+      if (!user.active) {
         throw new ErrorWithStatus({
           status: httpStatus.FORBIDDEN,
           message: 'Tài khoản đã bị khóa. Vui lòng liên hệ với quản trị để xác nhận.'

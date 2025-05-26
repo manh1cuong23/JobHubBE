@@ -41,7 +41,6 @@ export const sendVerifyEmail = async (toAddress: string, token: string, type: Se
   const template = fs.readFileSync(path.resolve('src/templates/templateVerifyEmail.html'), 'utf8');
   let body = '';
   let subject = '';
-    console.log("env.clientUrl",env.clientUrl)
   if (type === SendEmail.VerifyEmail) {
     subject = env.subjectEmailVerifyEmail as string;
     body = template
