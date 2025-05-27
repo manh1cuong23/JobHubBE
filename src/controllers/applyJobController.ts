@@ -12,10 +12,18 @@ import { ErrorWithStatus } from '~/models/Errors';
 import { httpStatus } from '~/constants/httpStatus';
 import { Apply } from '~/models/schemas/ApplySchema';
 import { CVType } from '~/models/schemas/CandidateSchema';
-
+function isValidObjectId(id: string) {
+  return /^[0-9a-fA-F]{24}$/.test(id);
+}
 
 export const getinforAppyController = async (req: Request<ParamsDictionary, any, any>, res: Response) => {
     const { id } = req.params;
+    
+  if (!isValidObjectId(id)) {
+    return res.status(400).json({
+      message: 'ID không hợp lệ'
+    });
+  }
     const job = await db.apply
       .aggregate([
         {
